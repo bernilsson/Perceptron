@@ -1,0 +1,58 @@
+-----------------------------------------------------------------------------
+--
+-- Module      :  Main
+-- Copyright   :
+-- License     :  AllRightsReserved
+--
+-- Maintainer  :
+-- Stability   :
+-- Portability :
+--
+-- |
+--
+-----------------------------------------------------------------------------
+
+module Main (
+
+    main
+
+) where
+
+import System.Environment (getArgs)
+import System.IO (hClose, openFile, hGetContents)
+import Data.List ()
+import System.Exit (exitSuccess, exitFailure)
+import GHC.IO.IOMode (IOMode(..))
+import Main.Func
+       (Image,readImages,
+        Face,step,percieveFace, shuffle, train, getEyesMouth, chunks, getFace , writePGM, rotImgCorrect)
+import Control.Monad (zipWithM_)
+
+main = do
+    args <- getArgs
+    if null args
+       then do putStrLn "No arguments given, exiting"
+               exitFailure
+       else do
+
+    inputContents <- readFile $ head args
+    dirtyEyeW <- readFile "eye-weights"
+    dirtyMouthW <- readFile "mouth-weights"
+    let images = map (rotImgCorrect 20) $ readImages inputContents
+        eyew = readWeights dirtyEyeW
+        mouthw = readWeights dirtyMouthW
+        answers = classify eyew mouthw images
+        output = zip answers [1..]
+    --print images
+    --putStrLn $ show answers
+    mapM_ (\(ans, num) -> putStrLn $ "Image" ++ (show num) ++ " " ++ (show ans)) output
+    exitSuccess
+
+
+readWeights :: String -> [Double]
+readWeights doubles = read doubles
+    
+classify :: [Double] -> [Double] -> [[Double]] -> [Int] 
+classify eyew mouthw images = map (percieveFace eyew mouthw step) images 
+
+

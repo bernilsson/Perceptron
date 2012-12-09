@@ -26,10 +26,10 @@ import Func
        (Image,readImages, Face,step,percieveFace, rotImgCorrect)
 import Control.Monad (zipWithM_)
 
--- | main tries to classify the images in the file given as the first paramater and output the
---   correct face as 1,2,3 or 4.
---   If no file is specified it exits with an error. This program is run with already trained weights
---   saved in the project root. The files loaded are "eye-weights" and "mouth-weights".
+-- | main tries to classify the images in the file given as the first paramater
+-- and output the correct face as 1,2,3 or 4.  If no file is specified it exits
+-- with an error. This program is run with already trained weights saved in the
+-- project root. The files loaded are "eye-weights" and "mouth-weights".
 
 main = do
     args <- getArgs
@@ -47,11 +47,10 @@ main = do
         answers = classify eyew mouthw images
         output = zip answers [1..]
     -- Format the output and map putStrLn over the output.
-    mapM_ (\(ans, num) -> putStrLn $ "Image" ++ (show num) ++ " " ++ (show ans)) output
+    mapM_ (\(ans, num) -> putStrLn $ "Image" ++ (show num)
+                          ++ " " ++ (show ans)) output
     exitSuccess
 
 
 classify :: [Double] -> [Double] -> [[Double]] -> [Int]
 classify eyew mouthw images = map (percieveFace eyew mouthw step) images
-
-

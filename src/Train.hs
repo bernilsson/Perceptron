@@ -61,5 +61,6 @@ main = do
 
 {-
 let (|>) = flip ($)
-    procseesd = input |> lines |> filter commentsEtc |> tail |> concatMap words |> map read
+    procseesd = input |> lines |> filter commentsEtc |> tail
+                |> concatMap words |> map read
 -}

@@ -4,8 +4,8 @@ import Control.Monad
 
 
 updateWeights :: Double -> Double -> [Double] -> [Double] -> [Double]
-updateWeights learnRate error inputs weights = 
-	zipWith (\x y -> x * y * learnRate * error) inputs weights
+updateWeights learnRate error inputs weights =
+    zipWith (\x y -> x * y * learnRate * error) inputs weights
 
 
 step :: Double -> Bool
@@ -13,7 +13,7 @@ step n = if n > 0 then 1 else 0
 
 
 percieveFace :: Image -> Face
-percieveFace img eyesWeigths mouthWeights actfn = 
+percieveFace img eyesWeigths mouthWeights actfn =
     getFace (percieve img eyesWeigths actfn) (percieve img mouthWeights actfn)
 
 -- ska percieve returnera true false, eller en Double?
@@ -27,7 +27,7 @@ type Mouth = Bool
 
 -- getEyesMouth returns the state of the eyes and mouth, given the face type.
 -- \ / up    brows = True  / \ down brows = False
--- \_/ happy mouth = True  /-\ sad mouth  = False 
+-- \_/ happy mouth = True  /-\ sad mouth  = False
 getEyesMouth :: Face -> (Eyes,Mouth)
 getEyesMouth 1 = (False,True)  -- Happy
 getEyesMouth 2 = (False,False) -- Sad
@@ -40,21 +40,21 @@ getFace (False,False) = 2 -- Sad
 getFace (True,False)  = 3 -- Mischievous
 getFace (True,True)   = 4 -- Mad
 
-trainFace :: [(Image,Face)] -> 
+trainFace :: [(Image,Face)] ->
 trainFace learnRate (img,face)
 
--- train takes a list of image and answer pairs to train on, the weights of the 
+-- train takes a list of image and answer pairs to train on, the weights of the
 -- output node that should be trained, and the learning rate. It returns updated
 -- weights.
 train :: Double -> [(Image,Bool)] -> [Double] -> [Double]
 train learnRate [] weights = weights -- nothing left to train on
-train learnRate ((img,ans):xs) weights = 
+train learnRate ((img,ans):xs) weights =
     if percieve img == ans
         then train xs weights
         else train xs (update weights)
-    where 
+    where
         percieve img = percieve img weights step
-        update weigths = updateWeights learnRate 1 img ws 
+        update weigths = updateWeights learnRate 1 img ws
 -----------------------------------------------------
 -- Flippin' images
 -----------------------------------------------------
@@ -63,13 +63,13 @@ train learnRate ((img,ans):xs) weights =
 flipCW :: Image -> Int -> Image
 flipCW img width = concat $ flip (chunk img width) []
     where flip :: [[Double]] -> [[Double]]
-          flip []  out = out 
-          flip img out = flip (map tail img) (map head img) 
+          flip []  out = out
+          flip img out = flip (map tail img) (map head img)
 
 flip180 = reverse
 
 -- Is it worth it, let me work it. I put my thing down, flip it and reverse it
-flipCCW img width = flip180 . flipCW 
+flipCCW img width = flip180 . flipCW
 
 -- http://www.haskell.org/haskellwiki/Random_shuffle
 -- | Randomly shuffle a list
@@ -96,11 +96,11 @@ shuffle xs = do ar <- newArray n xs
 
 train2 :: Double -> [Image] -> [Bool] -> [Double] -> [Double]
 train2 learnRate [] _ weights = weights -- nothing left to train on
-train2 learnRate (img:is) (ans:as) weights = 
+train2 learnRate (img:is) (ans:as) weights =
     if percieve img == ans
         then train is as weights
         else train is as (update weights)
-    where 
+    where
         percieve img = percieve img weights step
         update weigths = updateWeights learnRate 1 img weights
 

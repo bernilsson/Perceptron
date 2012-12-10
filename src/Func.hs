@@ -1,19 +1,4 @@
------------------------------------------------------------------------------
---
--- Module      :  Func
--- Copyright   :
--- License     :  AllRightsReserved
---
--- Maintainer  :
--- Stability   :
--- Portability :
---
--- |
---
------------------------------------------------------------------------------
-
 module Func (
-
     chunks,
     getEyesMouth,
     getFace,
@@ -31,7 +16,6 @@ module Func (
     readImages,
     readAnswers,
     kFold
-
 ) where
 
 

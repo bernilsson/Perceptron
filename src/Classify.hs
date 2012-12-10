@@ -1,22 +1,5 @@
------------------------------------------------------------------------------
---
--- Module      :  Main
--- Copyright   :
--- License     :  AllRightsReserved
---
--- Maintainer  :
--- Stability   :
--- Portability :
---
--- |
---
------------------------------------------------------------------------------
-
-module Main (
-
-    main
-
-) where
+module Main
+       where
 
 import System.Environment (getArgs)
 import Data.List ()

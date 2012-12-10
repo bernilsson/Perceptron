@@ -1,22 +1,5 @@
------------------------------------------------------------------------------
---
--- Module      :  Main
--- Copyright   :
--- License     :  AllRightsReserved
---
--- Maintainer  :
--- Stability   :
--- Portability :
---
--- |
---
------------------------------------------------------------------------------
-
-module Main (
-
-    main
-
-) where
+module Main
+       where
 
 import System.Environment (getArgs, getProgName)
 import System.IO (hClose, openFile, hGetContents)
@@ -51,16 +34,4 @@ main = do
     writePGM "mouthw.pgm" mouthweights2
     writeFile "mouth-weights" $ show mouthweights2
 
-
     exitSuccess
-
-
-
-
-
-
-{-
-let (|>) = flip ($)
-    procseesd = input |> lines |> filter commentsEtc |> tail
-                |> concatMap words |> map read
--}

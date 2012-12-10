@@ -55,6 +55,7 @@ train learnRate ((img,ans):xs) weights =
     where
         percieve img = percieve img weights step
         update weigths = updateWeights learnRate 1 img ws
+
 -----------------------------------------------------
 -- Flippin' images
 -----------------------------------------------------

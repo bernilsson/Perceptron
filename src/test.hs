@@ -1,3 +1,6 @@
+module Test
+       where
+
 import System.Random (randomRIO)
 import Data.Array.IO
 import Control.Monad

@@ -4,10 +4,8 @@ module Main
 import System.Environment (getArgs)
 import Data.List ()
 import System.Exit (exitSuccess, exitFailure)
-import System.IO (IOMode(..))
 import Func
-       (Image,readImages, Face,step,perceiveFace, rotImgCorrect)
-import Control.Monad (zipWithM_)
+       (readImages, step, perceiveFace, rotImgCorrect)
 
 -- | main tries to classify the images in the file given as the first paramater
 -- and output the correct face as 1,2,3 or 4.  If no file is specified it exits
@@ -29,7 +27,7 @@ main = do
         eyew = read dirtyEyeW :: [Double]
         mouthw = read dirtyMouthW :: [Double]
         answers = classify eyew mouthw images
-        output = zip answers [1..]
+        output = zip answers [(1::Int)..]
     -- Format the output and map putStrLn over the output.
     mapM_ (\(ans, num) -> putStrLn $ "Image" ++ (show num)
                           ++ " " ++ (show ans)) output

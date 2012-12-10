@@ -1,13 +1,9 @@
 module Main
        where
 
-import System.Environment (getArgs, getProgName)
-import System.IO (hClose, openFile, hGetContents, IOMode(..))
 import System.Exit (exitSuccess, exitFailure)
-import Func
-       (Image, Face, shuffle, train, getEyesMouth, chunks,
-        test, writePGM, rotImgCorrect, readImages, readAnswers, kFold)
-import Control.Monad (zipWithM_)
+import Func (shuffle, getEyesMouth, rotImgCorrect, readImages,
+             readAnswers, kFold)
 
 main :: IO ()
 main = do
@@ -34,9 +30,9 @@ main = do
 
     shuffled <- shuffle (zip eyes mouth)
 
-    let (shuffledEyes,shuffledMouth) = unzip shuffled
-        (testEyes,trainEyes) = splitAt 50 shuffledEyes
-        (testMouth,trainMouth) = splitAt 50 shuffledMouth
+    let (shuffledEyes, shuffledMouth) = unzip shuffled
+        (_testEyes, _trainEyes) = splitAt 50 shuffledEyes
+        (_testMouth, _trainMouth) = splitAt 50 shuffledMouth
 --    permuEyes <- shuffle $ take 10000 $ cycle trainEyes
 --    permuMouth <- shuffle $ take 10000 $ cycle trainMouth
 {-
@@ -52,8 +48,8 @@ main = do
 
     putStrLn "Eyes "
 
-    test <- kFold 25 eyes
-    putStrLn $ "Bertil " ++ (show test)
+    tst <- kFold 25 eyes
+    putStrLn $ "Bertil " ++ (show tst)
     putStrLn "Mouth "
     kFold 25 mouth >>= (putStrLn . show)
 

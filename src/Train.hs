@@ -1,15 +1,11 @@
 module Main
        where
 
-import System.Environment (getArgs, getProgName)
-import System.IO (hClose, openFile, hGetContents)
 import Data.List ()
-import System.Exit (exitSuccess, exitFailure)
-import GHC.IO.IOMode (IOMode(..))
+import System.Exit (exitSuccess)
 import Func
-       (Image, Face, shuffle, train, getEyesMouth, chunks,
-        test, writePGM, rotImgCorrect, readImages, readAnswers, kFold)
-import Control.Monad (zipWithM_)
+       (shuffle, train, getEyesMouth,
+        writePGM, rotImgCorrect, readImages, readAnswers)
 
 main :: IO ()
 main = do

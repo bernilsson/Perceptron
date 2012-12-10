@@ -18,12 +18,10 @@ module Func (
     kFold
 ) where
 
-
 import System.Random (randomRIO)
 import Data.Array.IO
 import Data.List (sortBy, intersperse)
 import Control.Monad
-import Debug.Trace (trace)
 import Data.Char (isAlpha)
 
 type Image = [Double]
@@ -78,7 +76,7 @@ writePGM filename image =
 rotImgCorrect :: Int -> Image -> Image
 rotImgCorrect width img =
   let images = take 4 (iterate (rotate90 width) img)
-      sumHalf = sum . filter (>0.8) . take ((width^2) `div` 2)
+      sumHalf = sum . filter (>0.8) . take ((width^(2::Int)) `div` 2)
   in head $ sortBy (\img1 img2 -> compare (sumHalf img1) (sumHalf img2)) images
 
 -- | rotate90 rotates a square image 90 degrees counterclockwise.
@@ -93,6 +91,7 @@ rotate90 width img = rot (chunks width img) []
 -------- Training -------------------------------------------------
 -------------------------------------------------------------------
 
+learnRate :: Double
 learnRate = 0.0001
 
 -- | randomWeights returns a list of n random weights between 0 and 0.1
@@ -103,8 +102,8 @@ randomWeights n | n < 1 = []
 -- | updateWeights is used by batchTrain to modify the weights. This is
 -- basically the the perceptron learning rule in action.
 updateWeights :: Double -> Double -> [Double] -> [Double] -> [Double]
-updateWeights learnRate error inputs weights =
-    zipWith (\x y -> y + learnRate * error * x) inputs weights
+updateWeights lrnRate err inputs weights =
+    zipWith (\x y -> y + lrnRate * err * x) inputs weights
 
 
 -- | train takes one list of image and answer pairs to train on and one list to
@@ -136,11 +135,11 @@ trainHelper xs tests weights best =
 -- trained.  It returns the trained weights.
 batchTrain :: [(Image,Double)] -> [Double] -> Double -> Int -> ([Double],Int)
 batchTrain [] weights _ numErr = (weights, numErr) -- nothing left to train on
-batchTrain ((img,ans):xs) weights learnRate numErr =
-    let error = ans - perceive img weights sigmoid
-        newWeights = updateWeights learnRate error img weights
-    in batchTrain xs newWeights learnRate
-       (if abs error > 0.5 then numErr+1 else numErr)
+batchTrain ((img,ans):xs) weights lrnRate numErr =
+    let err = ans - perceive img weights sigmoid
+        newWeights = updateWeights lrnRate err img weights
+    in batchTrain xs newWeights lrnRate
+       (if abs err > 0.5 then numErr+1 else numErr)
 
 -------------------------------------------------------------------
 -------- Perception -----------------------------------------------
@@ -170,6 +169,7 @@ getEyesMouth 1 = (0,1)  -- Happy
 getEyesMouth 2 = (0,0) -- Sad
 getEyesMouth 3 = (1,0)  -- Mischievous
 getEyesMouth 4 = (1,1)   -- Mad
+getEyesMouth _ = error "Func.getEyesMouth: unexpected"
 
 -- | getFace takes the state of the eyes and mouth, and returns the facetype
 getFace :: Eyes -> Mouth -> Face
@@ -177,7 +177,7 @@ getFace 0 1 = 1 -- Happy
 getFace 0 0 = 2 -- Sad
 getFace 1 0 = 3 -- Mischievous
 getFace 1 1 = 4 -- Mad
-getFace n m = -9000000 -- should not happen
+getFace _ _ = error "Func.getFace: unexpected"
 
 -------------------------------------------------------------------
 -------- Testing --------------------------------------------------
@@ -189,7 +189,7 @@ kFold :: Int -> [(Image, Double)] -> IO Double
 kFold k input = helper (cycle input) times 0
     where times = length input `div` k
           helper :: [(Image, Double)] -> Int -> Int -> IO Double
-          helper xs 0 totCorr = return $ fromIntegral totCorr /
+          helper _  0 totCorr = return $ fromIntegral totCorr /
                                 (fromIntegral $ length input)
           helper xs n totCorr =
               let (tests, rest) = splitAt k xs
@@ -214,6 +214,7 @@ test ((image,eye):eyes) ((_, mouth):mouths) eyew mouthw xs =
         correct = aj == eye && moth == mouth
         in test eyes mouths eyew mouthw
            (((getFace aj moth),(getFace eye mouth),correct):xs)
+test _ _ _ _ _ = error "Func.test: unexpected"
 
 -------------------------------------------------------------------
 -------- Helper functions -----------------------------------------
@@ -231,7 +232,7 @@ chunks n xs = y1 : chunks n y2
 -- | Randomly shuffle a list
 --   /O(N)/
 shuffle :: [a] -> IO [a]
-shuffle xs = do ar <- newArray n xs
+shuffle xs = do ar <- mkArray n xs
                 forM [1..n] $ \i -> do
                     j <- randomRIO (i,n)
                     vi <- readArray ar i
@@ -240,16 +241,16 @@ shuffle xs = do ar <- newArray n xs
                     return vj
              where
                  n = length xs
-                 newArray :: Int -> [a] -> IO (IOArray Int a)
-                 newArray n xs =  newListArray (1,n) xs
+                 mkArray :: Int -> [a] -> IO (IOArray Int a)
+                 mkArray size ys =  newListArray (1,size) ys
 
 
 
 {-
 updateWeights :: Double -> Double -> [Double] -> [Double] -> [Double]
-updateWeights learnRate error inputs weights =
+updateWeights lrnRate error inputs weights =
     let h = sum $ zipWith (*) inputs weights
-    in zipWith (\x y -> y + learnRate * error * x * (sigDeriv h) ) inputs weights
+    in zipWith (\x y -> y + lrnRate * error * x * (sigDeriv h) ) inputs weights
 
 sigDeriv :: Double -> Double
 sigDeriv x = exp x / ((1+exp x)^2)

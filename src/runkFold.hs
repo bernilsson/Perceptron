@@ -1,9 +1,9 @@
 module Main
        where
 
-import System.Exit (exitSuccess, exitFailure)
-import Func (shuffle, getEyesMouth, rotImgCorrect, readImages,
-             readAnswers, kFold)
+import Func        (getEyesMouth, kFold, readAnswers, readImages, rotImgCorrect,
+                    shuffle)
+import System.Exit (exitFailure, exitSuccess)
 
 main :: IO ()
 main = do

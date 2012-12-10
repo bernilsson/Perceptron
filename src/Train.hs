@@ -1,11 +1,9 @@
 module Main
        where
 
-import Data.List ()
+import Func        (getEyesMouth, readAnswers, readImages, rotImgCorrect,
+                    shuffle, train, writePGM)
 import System.Exit (exitSuccess)
-import Func
-       (shuffle, train, getEyesMouth,
-        writePGM, rotImgCorrect, readImages, readAnswers)
 
 main :: IO ()
 main = do

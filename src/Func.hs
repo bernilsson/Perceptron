@@ -1,28 +1,19 @@
 module Func (
-    chunks,
-    getEyesMouth,
-    getFace,
-    Face,
-    Image,
-    train,
-    numCorrect,
-    test,
-    perceive,
-    perceiveFace,
-    step,
-    writePGM,
-    shuffle,
-    rotImgCorrect,
-    readImages,
-    readAnswers,
-    kFold
+  Face, Image,
+  getEyesMouth, getFace,
+  kFold, numCorrect,
+  perceive, perceiveFace,
+  readAnswers, readImages,
+  rotImgCorrect, shuffle,
+  step, test, train,
+  writePGM, chunks
 ) where
 
-import System.Random (randomRIO)
-import Data.Array.IO
-import Data.List (sortBy, intersperse)
 import Control.Monad
-import Data.Char (isAlpha)
+import Data.Array.IO
+import Data.Char     (isAlpha)
+import Data.List     (intersperse, sortBy)
+import System.Random (randomRIO)
 
 type Image = [Double]
 type Weight = Double

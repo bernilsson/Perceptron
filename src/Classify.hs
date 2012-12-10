@@ -1,11 +1,9 @@
 module Main
        where
 
+import Func               (perceiveFace, readImages, rotImgCorrect, step)
 import System.Environment (getArgs)
-import Data.List ()
-import System.Exit (exitSuccess, exitFailure)
-import Func
-       (readImages, step, perceiveFace, rotImgCorrect)
+import System.Exit        (exitFailure, exitSuccess)
 
 -- | main tries to classify the images in the file given as the first paramater
 -- and output the correct face as 1,2,3 or 4.  If no file is specified it exits

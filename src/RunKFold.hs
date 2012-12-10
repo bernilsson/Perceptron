@@ -1,7 +1,7 @@
 module Main
        where
 
-import Func        (getEyesMouth, kFold, readAnswers, readImages, rotImgCorrect,
+import Common      (getEyesMouth, kFold, readAnswers, readImages, rotImgCorrect,
                     shuffle)
 import System.Exit (exitFailure, exitSuccess)
 

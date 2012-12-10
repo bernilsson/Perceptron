@@ -1,7 +1,7 @@
 module Main
        where
 
-import Func               (perceiveFace, readImages, rotImgCorrect, step)
+import Common             (perceiveFace, readImages, rotImgCorrect, step)
 import System.Environment (getArgs)
 import System.Exit        (exitFailure, exitSuccess)
 

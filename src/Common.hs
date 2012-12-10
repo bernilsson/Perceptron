@@ -1,4 +1,4 @@
-module Func (
+module Common (
   Face, Image,
   getEyesMouth, getFace,
   kFold, numCorrect,
@@ -160,7 +160,7 @@ getEyesMouth 1 = (0,1)  -- Happy
 getEyesMouth 2 = (0,0) -- Sad
 getEyesMouth 3 = (1,0)  -- Mischievous
 getEyesMouth 4 = (1,1)   -- Mad
-getEyesMouth _ = error "Func.getEyesMouth: unexpected"
+getEyesMouth _ = error "Common.getEyesMouth: unexpected"
 
 -- | getFace takes the state of the eyes and mouth, and returns the facetype
 getFace :: Eyes -> Mouth -> Face
@@ -168,7 +168,7 @@ getFace 0 1 = 1 -- Happy
 getFace 0 0 = 2 -- Sad
 getFace 1 0 = 3 -- Mischievous
 getFace 1 1 = 4 -- Mad
-getFace _ _ = error "Func.getFace: unexpected"
+getFace _ _ = error "Common.getFace: unexpected"
 
 -------------------------------------------------------------------
 -------- Testing --------------------------------------------------
@@ -205,7 +205,7 @@ test ((image,eye):eyes) ((_, mouth):mouths) eyew mouthw xs =
         correct = aj == eye && moth == mouth
         in test eyes mouths eyew mouthw
            (((getFace aj moth),(getFace eye mouth),correct):xs)
-test _ _ _ _ _ = error "Func.test: unexpected"
+test _ _ _ _ _ = error "Common.test: unexpected"
 
 -------------------------------------------------------------------
 -------- Helper functions -----------------------------------------

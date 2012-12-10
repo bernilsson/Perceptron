@@ -17,15 +17,18 @@ executable Classify
   build-depends:       base >= 4.5 && < 5,
                        random >=1.0 && < 2, array >= 0.4 && < 1.0
   hs-source-dirs:      src
+  ghc-options:         -Wall
 
 executable Train
   main-is: Train.hs
   build-depends:       base >=4.5 && < 5,
                        random >=1.0 && < 2, array >= 0.4 && < 1.0
   hs-source-dirs:      src
+  ghc-options:         -Wall
 
 executable runkFold
   main-is: runkFold.hs
   build-depends:       base >=4.5 && < 5,
                        random >=1.0 && < 2, array >= 0.4 && < 1.0
   hs-source-dirs:      src
+  ghc-options:         -Wall

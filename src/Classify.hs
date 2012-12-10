@@ -14,6 +14,7 @@ import Control.Monad (zipWithM_)
 -- with an error. This program is run with already trained weights saved in the
 -- project root. The files loaded are "eye-weights" and "mouth-weights".
 
+main :: IO ()
 main = do
     args <- getArgs
     if null args

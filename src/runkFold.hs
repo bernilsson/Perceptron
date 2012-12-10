@@ -11,6 +11,7 @@ import Func
         test, writePGM, rotImgCorrect, readImages, readAnswers, kFold)
 import Control.Monad (zipWithM_)
 
+main :: IO ()
 main = do
     let args =["training.txt"]
     if null args

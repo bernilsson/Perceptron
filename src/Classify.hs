@@ -4,7 +4,7 @@ module Main
 import System.Environment (getArgs)
 import Data.List ()
 import System.Exit (exitSuccess, exitFailure)
-import GHC.IO.IOMode (IOMode(..))
+import System.IO (IOMode(..))
 import Func
        (Image,readImages, Face,step,perceiveFace, rotImgCorrect)
 import Control.Monad (zipWithM_)

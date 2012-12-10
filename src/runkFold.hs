@@ -2,10 +2,8 @@ module Main
        where
 
 import System.Environment (getArgs, getProgName)
-import System.IO (hClose, openFile, hGetContents)
-import Data.List ()
+import System.IO (hClose, openFile, hGetContents, IOMode(..))
 import System.Exit (exitSuccess, exitFailure)
-import GHC.IO.IOMode (IOMode(..))
 import Func
        (Image, Face, shuffle, train, getEyesMouth, chunks,
         test, writePGM, rotImgCorrect, readImages, readAnswers, kFold)

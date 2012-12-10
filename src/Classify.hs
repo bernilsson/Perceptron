@@ -6,7 +6,7 @@ import Data.List ()
 import System.Exit (exitSuccess, exitFailure)
 import GHC.IO.IOMode (IOMode(..))
 import Func
-       (Image,readImages, Face,step,percieveFace, rotImgCorrect)
+       (Image,readImages, Face,step,perceiveFace, rotImgCorrect)
 import Control.Monad (zipWithM_)
 
 -- | main tries to classify the images in the file given as the first paramater
@@ -36,4 +36,4 @@ main = do
 
 
 classify :: [Double] -> [Double] -> [[Double]] -> [Int]
-classify eyew mouthw images = map (percieveFace eyew mouthw step) images
+classify eyew mouthw images = map (perceiveFace eyew mouthw step) images

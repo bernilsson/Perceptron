@@ -12,13 +12,13 @@ step :: Double -> Bool
 step n = if n > 0 then 1 else 0
 
 
-percieveFace :: Image -> Face
-percieveFace img eyesWeigths mouthWeights actfn =
-    getFace (percieve img eyesWeigths actfn) (percieve img mouthWeights actfn)
+perceiveFace :: Image -> Face
+perceiveFace img eyesWeigths mouthWeights actfn =
+    getFace (perceive img eyesWeigths actfn) (perceive img mouthWeights actfn)
 
--- ska percieve returnera true false, eller en Double?
-percieve :: [Double] -> [Double] -> (Double -> Bool) -> Bool
-percieve inputs weights actfn = actfn $ sum $ zipWith (*) inputs weights
+-- ska perceive returnera true false, eller en Double?
+perceive :: [Double] -> [Double] -> (Double -> Bool) -> Bool
+perceive inputs weights actfn = actfn $ sum $ zipWith (*) inputs weights
 
 type Image = [Double]
 type Face = Int -- 1 = Happy, 2 = Sad, 3 = Mischievous, 4 = Mad
@@ -49,11 +49,11 @@ trainFace learnRate (img,face)
 train :: Double -> [(Image,Bool)] -> [Double] -> [Double]
 train learnRate [] weights = weights -- nothing left to train on
 train learnRate ((img,ans):xs) weights =
-    if percieve img == ans
+    if perceive img == ans
         then train xs weights
         else train xs (update weights)
     where
-        percieve img = percieve img weights step
+        perceive img = perceive img weights step
         update weigths = updateWeights learnRate 1 img ws
 
 -----------------------------------------------------
@@ -98,11 +98,11 @@ shuffle xs = do ar <- newArray n xs
 train2 :: Double -> [Image] -> [Bool] -> [Double] -> [Double]
 train2 learnRate [] _ weights = weights -- nothing left to train on
 train2 learnRate (img:is) (ans:as) weights =
-    if percieve img == ans
+    if perceive img == ans
         then train is as weights
         else train is as (update weights)
     where
-        percieve img = percieve img weights step
+        perceive img = perceive img weights step
         update weigths = updateWeights learnRate 1 img weights
 
 

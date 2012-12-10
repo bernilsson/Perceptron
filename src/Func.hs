@@ -7,8 +7,8 @@ module Func (
     train,
     numCorrect,
     test,
-    percieve,
-    percieveFace,
+    perceive,
+    perceiveFace,
     step,
     writePGM,
     shuffle,
@@ -137,7 +137,7 @@ trainHelper xs tests weights best =
 batchTrain :: [(Image,Double)] -> [Double] -> Double -> Int -> ([Double],Int)
 batchTrain [] weights _ numErr = (weights, numErr) -- nothing left to train on
 batchTrain ((img,ans):xs) weights learnRate numErr =
-    let error = ans - percieve img weights sigmoid
+    let error = ans - perceive img weights sigmoid
         newWeights = updateWeights learnRate error img weights
     in batchTrain xs newWeights learnRate
        (if abs error > 0.5 then numErr+1 else numErr)
@@ -152,16 +152,16 @@ sigmoid x = 1/(1+(exp ( 0-x )))
 step :: Double -> Double
 step n = if n > 0.5 then 1 else 0
 
--- | percieveFace tries to classify a given image with a set of pretrained
+-- | perceiveFace tries to classify a given image with a set of pretrained
 -- weights.  returns the face as an Int according to specs.
-percieveFace :: [Weight] -> [Weight] -> (Double -> Double) -> Image -> Face
-percieveFace eyesWeigths mouthWeights actfn img =
-    getFace (percieve img eyesWeigths actfn) (percieve img mouthWeights actfn)
+perceiveFace :: [Weight] -> [Weight] -> (Double -> Double) -> Image -> Face
+perceiveFace eyesWeigths mouthWeights actfn img =
+    getFace (perceive img eyesWeigths actfn) (perceive img mouthWeights actfn)
 
--- | percieve takes a image, weights and and a activation function, and returns
+-- | perceive takes a image, weights and and a activation function, and returns
 -- the neurons output
-percieve :: Image -> [Weight] -> (Double -> Double) -> Double
-percieve inputs weights actfn = actfn $ sum $ zipWith (*) inputs weights
+perceive :: Image -> [Weight] -> (Double -> Double) -> Double
+perceive inputs weights actfn = actfn $ sum $ zipWith (*) inputs weights
 
 
 -- | getEyesMouth returns the state of the eyes and mouth, given the face type.
@@ -203,14 +203,14 @@ kFold k input = helper (cycle input) times 0
 
 numCorrect :: [(Image, Double)] -> [Weight] -> Int
 numCorrect xs weights =
-  sum $ map (\(img,ans) -> fromEnum $ percieve img weights step == ans) xs
+  sum $ map (\(img,ans) -> fromEnum $ perceive img weights step == ans) xs
 
 test :: [(Image, Eyes)] -> [(Image, Mouth)] -> [Weight] -> [Weight]
         -> [(Face,Face,Bool)] -> ([(Face,Face,Bool)], Int)
 test [] _ _ _ xs = (xs,length $ (filter (\(_,_,tupple) -> tupple)) xs)
 test ((image,eye):eyes) ((_, mouth):mouths) eyew mouthw xs =
-    let aj = (percieve image eyew step)
-        moth = (percieve image mouthw step)
+    let aj = (perceive image eyew step)
+        moth = (perceive image mouthw step)
         correct = aj == eye && moth == mouth
         in test eyes mouths eyew mouthw
            (((getFace aj moth),(getFace eye mouth),correct):xs)

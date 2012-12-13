@@ -1,33 +1,11 @@
------------------------------------------------------------------------------
---
--- Module      :  Main
--- Copyright   :
--- License     :  AllRightsReserved
---
--- Maintainer  :
--- Stability   :
--- Portability :
---
--- |
---
------------------------------------------------------------------------------
+module Main
+       where
 
-module Main (
+import Common      (getEyesMouth, readAnswers, readImages, rotImgCorrect,
+                    shuffle, train, writePGM)
+import System.Exit (exitSuccess)
 
-    main
-
-) where
-
-import System.Environment (getArgs, getProgName)
-import System.IO (hClose, openFile, hGetContents)
-import Data.List ()
-import System.Exit (exitSuccess, exitFailure)
-import GHC.IO.IOMode (IOMode(..))
-import Func
-       (Image, Face, shuffle, train, getEyesMouth, chunks,
-        test, writePGM, rotImgCorrect, readImages, readAnswers, kFold)
-import Control.Monad (zipWithM_)
-
+main :: IO ()
 main = do
     inputContents <- readFile "training.txt"
     inputAnswers <- readFile "training-facit.txt"
@@ -51,15 +29,4 @@ main = do
     writePGM "mouthw.pgm" mouthweights2
     writeFile "mouth-weights" $ show mouthweights2
 
-
     exitSuccess
-
-
-
-
-
-
-{-
-let (|>) = flip ($)
-    procseesd = input |> lines |> filter commentsEtc |> tail |> concatMap words |> map read
--}

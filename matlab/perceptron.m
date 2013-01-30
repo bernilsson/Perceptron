@@ -13,7 +13,7 @@ for i=1:nelem;
 	images{i}=input;
 
 	garb = fscanf(ansfid,'%s',1);
-	[eye,mouth] = getEM(fscanf(ansfid,'%f',1));
+	[eye,mouth] = faceToEyeMouth(fscanf(ansfid,'%f',1));
     images{i}.eye  = eye;
     images{i}.mouth  = mouth;
     
